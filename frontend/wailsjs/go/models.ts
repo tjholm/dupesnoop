@@ -22,7 +22,7 @@ export namespace analyzer {
 	}
 	export class Node {
 	    name: string;
-	    color: string;
+	    color?: string;
 	    loc?: number;
 	    children?: Node[];
 	

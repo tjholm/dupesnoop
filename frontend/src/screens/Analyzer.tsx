@@ -6,18 +6,55 @@ import { useEffect, useState } from "react";
 import { bytesToHumanReadable } from "../lib/humanize";
 import { Link } from "react-router-dom";
 import { ResponsiveSunburst } from "@nivo/sunburst";
+import FileBrowser from "../components/FileBrowser";
 
 export const DiskAnalysis = () => {
     const [usage, setUsage] = useState<analyzer.Node | null>(null);
+    const [path, setPath] = useState<string | null>(null);
 
     useEffect(() => {
-        GetDiskUsage("/").then((usage) => {
-            setUsage(usage);
-        });
-    });
+        if (path) {
+            GetDiskUsage(path).then((usage) => {
+                setUsage(usage);
+            }).catch((err) => {
+                console.error(err);
+            });
+        }
+    }, [path]);
+
+    const followPath = (path: string) => {
+        setPath(path);
+        // GetDiskUsage(path).then((usage) => {
+        //     setUsage(usage);
+        // }).catch((err) => {
+        //     console.error(err);
+        // });
+    };
+
+    if (!usage) {
+        return (
+            <>
+                <FileBrowser
+                    value={path || undefined}
+                    onSelected={(path) =>
+                        setPath(path)
+                    }
+                />
+                <div>Loading...</div>
+            </>
+        );
+    }
+
+    console.log(usage);
 
     return (
         <div className="flex w-full h-full">
+            <FileBrowser
+                value={path || undefined}
+                onSelected={(path) =>
+                    setPath(path)
+                }
+            />
             <div className="flex-1">
                 <ResponsiveSunburst
                     data={usage}
@@ -26,16 +63,19 @@ export const DiskAnalysis = () => {
                     value="loc"
                     cornerRadius={2}
                     borderColor={{ theme: 'background' }}
-                    colors={{ scheme: 'nivo' }}
-                    childColor={{
-                        from: 'color',
-                        modifiers: [
-                            [
-                                'brighter',
-                                0.1
-                            ]
-                        ]
+                    onClick={(node) => {
+                        followPath(node.data.name);
                     }}
+                    colors={{ scheme: 'nivo' }}
+                    // childColor={{
+                    //     from: 'color',
+                    //     modifiers: [
+                    //         [
+                    //             'brighter',
+                    //             0.1
+                    //         ]
+                    //     ]
+                    // }}
                     enableArcLabels={true}
                     arcLabelsSkipAngle={10}
                     arcLabelsTextColor={{
@@ -64,15 +104,12 @@ export const DiskSelector = () => {
 
     return (
         <div className="flex flex-col gap-3 pt-1 flex-auto overflow-visible">
-
             {disks.map((disk) => (
-                <>
-                    <Link to={`/analyzer/test`}>
-                        <div key={disk.device} className="">
-                            {disk.device} - {disk.mount} - {bytesToHumanReadable(disk.used)} / {bytesToHumanReadable(disk.total)}
-                        </div>
-                    </Link>
-                </>
+                <Link key={disk.mount} to={`/analyzer/test`}>
+                    <div className="">
+                        {disk.device} - {disk.mount} - {bytesToHumanReadable(disk.used)} / {bytesToHumanReadable(disk.total)}
+                    </div>
+                </Link>
             ))}
         </div>
     );
