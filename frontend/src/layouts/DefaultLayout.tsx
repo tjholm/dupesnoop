@@ -21,9 +21,9 @@ const Nav = () => {
 
 const DefaultLayout = ({ children }: DefaultLayoutProps) => {
   return (
-    <div className="bg-[#F8F8F6] min-h-screen w-full px-6 flex flex-row py-8 overflow-visible gap-10">
+    <div className="bg-[#F8F8F6] min-h-screen w-full px-6 flex flex-row py-8 overflow-visible gap-4">
       <Nav />
-      <section className="w-full min-h-full flex-auto flex flex-col overflow-visible">{children}</section>
+      <section className="bg-[#F8F8F6] w-full min-h-full flex-auto flex flex-col overflow-visible p-4 rounded-md">{children}</section>
     </div>
   );
 };
