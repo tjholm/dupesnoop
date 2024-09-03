@@ -1,3 +1,28 @@
+export namespace analyzer {
+	
+	export class DiskInfo {
+	    device: string;
+	    mount: string;
+	    fs: string;
+	    used: number;
+	    total: number;
+	
+	    static createFrom(source: any = {}) {
+	        return new DiskInfo(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.device = source["device"];
+	        this.mount = source["mount"];
+	        this.fs = source["fs"];
+	        this.used = source["used"];
+	        this.total = source["total"];
+	    }
+	}
+
+}
+
 export namespace main {
 	
 	export class FileDetailsResult {

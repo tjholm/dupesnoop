@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"slices"
 
+	"github.com/jyecusch/dupesnoop/backend/analyzer"
 	"github.com/jyecusch/dupesnoop/pkg/files"
 	"github.com/spf13/afero"
 
@@ -15,7 +16,8 @@ import (
 type App struct {
 	ctx   context.Context
 	dupes map[string][]FileDetails
-	fs    afero.Fs
+	*analyzer.Analyzer
+	fs afero.Fs
 }
 
 // NewApp creates a new App application struct
@@ -24,7 +26,8 @@ func NewApp(fs afero.Fs) *App {
 		fs = afero.NewOsFs()
 	}
 	return &App{
-		fs: fs,
+		fs:       fs,
+		Analyzer: analyzer.NewAnalyzer(),
 	}
 }
 

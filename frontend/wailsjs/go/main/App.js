@@ -10,6 +10,10 @@ export function FindDuplicates(arg1) {
   return window['go']['main']['App']['FindDuplicates'](arg1);
 }
 
+export function ListDisks() {
+  return window['go']['main']['App']['ListDisks']();
+}
+
 export function SelectDirectory() {
   return window['go']['main']['App']['SelectDirectory']();
 }
