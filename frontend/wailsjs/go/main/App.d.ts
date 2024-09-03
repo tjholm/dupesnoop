@@ -7,6 +7,8 @@ export function DeleteFiles(arg1:Array<string>):Promise<void>;
 
 export function FindDuplicates(arg1:string):Promise<Array<main.FileDetailsResult>>;
 
+export function GetDiskUsage(arg1:string):Promise<analyzer.Node>;
+
 export function ListDisks():Promise<Array<analyzer.DiskInfo>>;
 
 export function SelectDirectory():Promise<string>;
